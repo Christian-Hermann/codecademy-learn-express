@@ -45,3 +45,7 @@ app.get("/expressions/:id", (req, res, next) => {
 
 // export app for use in main.js and for testing
 module.exports = { app };
+
+// BASIC PUT REQUEST
+// Add your PUT route handler here:
+app.put("/expressions/:id", (req, res, next) => {});
