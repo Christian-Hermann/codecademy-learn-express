@@ -49,3 +49,20 @@ module.exports = { app };
 // BASIC PUT REQUEST
 // Add your PUT route handler here:
 app.put("/expressions/:id", (req, res, next) => {});
+
+// USING QUERIES
+app.put("/expressions/:id", (req, res, next) => {
+  const expressionIndex = getIndexById(req.params.id, expressions);
+
+  if (expressionIndex != -1) {
+    const updatedExpression = updateElement(
+      req.params.id,
+      req.query,
+      expressions
+    );
+
+    res.send(updatedExpression);
+  } else {
+    res.status(404).send();
+  }
+});
