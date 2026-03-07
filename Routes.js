@@ -66,3 +66,14 @@ app.put("/expressions/:id", (req, res, next) => {
     res.status(404).send();
   }
 });
+
+// CREATING AN EXPRESSION
+app.post("/expressions", (req, res, next) => {
+  const newExpression = createElement("expressions", req.query);
+  if (newExpression) {
+    expressions.push(newExpression);
+    res.status(201).send(newExpression);
+  } else {
+    res.status(400).send();
+  }
+});
