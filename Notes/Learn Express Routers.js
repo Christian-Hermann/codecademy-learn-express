@@ -80,3 +80,22 @@ expressionsRouter.delete("/:id", (req, res, next) => {
     res.status(404).send();
   }
 });
+
+// CODE CHALLENGE
+const express = require("express");
+const app = express();
+
+const buildingMaterials = {
+  wood: ["plywood", "2x4s", "cedar shingles"],
+  metal: ["steel girders", "wall studs", "rebar"],
+};
+
+app.get("/metals", (req, res, next) => {
+  const arrayToSend = buildingMaterials.metal;
+  res.send(arrayToSend);
+});
+
+// export app for use in main.js and for testing
+module.exports = {
+  app,
+};
