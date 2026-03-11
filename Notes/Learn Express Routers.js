@@ -122,3 +122,15 @@ app.post("/soups", (req, res, next) => {
     res.status(400).send();
   }
 });
+
+// CODE CHALLLENGE: DELETE
+app.delete("/puddings/:flavor", (req, res, next) => {
+  const puddingIndex = findPuddingIndex(req.params.flavor);
+
+  if (puddingIndex !== -1) {
+    deletePuddingAtIndex(puddingIndex);
+    res.status(204).send();
+  } else {
+    res.status(404).send();
+  }
+});
