@@ -99,3 +99,16 @@ app.get("/metals", (req, res, next) => {
 module.exports = {
   app,
 };
+
+// CODE CHALLENGE: PUT
+app.put("/currencies/:name/countries", (req, res, next) => {
+  const currencyName = req.params.name;
+  const currency = currencies[currencyName];
+
+  if (currency) {
+    currency.countries = req.query.countries;
+    res.send(currency);
+  } else {
+    res.status(404).send();
+  }
+});
