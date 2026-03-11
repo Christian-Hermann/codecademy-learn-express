@@ -112,3 +112,13 @@ app.put("/currencies/:name/countries", (req, res, next) => {
     res.status(404).send();
   }
 });
+
+// CODE CHALLENGE: POST
+app.post("/soups", (req, res, next) => {
+  if (req.query.name) {
+    soups.push(req.query.name);
+    res.status(201).send(req.query.name);
+  } else {
+    res.status(400).send();
+  }
+});
