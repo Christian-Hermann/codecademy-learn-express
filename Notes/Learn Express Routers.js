@@ -134,3 +134,20 @@ app.delete("/puddings/:flavor", (req, res, next) => {
     res.status(404).send();
   }
 });
+
+// CODE CHALLENGE: ROUTER
+const sauceRouter = express.Router();
+// Add your code here:
+app.use("/sauces", sauceRouter);
+
+const sauces = [
+  "carbonara",
+  "primavera",
+  "bolognese",
+  "puttanesca",
+  "fra diavolo",
+];
+
+sauceRouter.get("/", (req, res, next) => {
+  res.send(sauces);
+});
