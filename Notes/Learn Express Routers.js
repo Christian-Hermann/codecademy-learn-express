@@ -151,3 +151,28 @@ const sauces = [
 sauceRouter.get("/", (req, res, next) => {
   res.send(sauces);
 });
+
+// CODE CHALLENGE: CREATE TWO ROUTES
+const express = require("express");
+const app = express();
+
+const mountainsRouter = express.Router();
+const mountainRangesRouter = express.Router();
+
+const mountains = ["denali", "olympus", "kilimanjaro", "matterhorn"];
+const mountainRanges = ["alps", "andes", "himalayas", "rockies"];
+
+app.use("/mountains", mountainsRouter);
+app.use("/mountain-ranges", mountainRangesRouter);
+
+mountainsRouter.get("/", (req, res, net) => {
+  res.send(mountains);
+});
+mountainRangesRouter.get("/", (req, res, next) => {
+  res.send(mountainRanges);
+});
+
+// export app for use in main.js and for testing
+module.exports = {
+  app,
+};
