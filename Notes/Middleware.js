@@ -49,3 +49,11 @@ const bodyParser = (req, res, next) => {
     next();
   });
 };
+
+// ERROR HANDLING MIDDLEWARE
+app.use((err, req, res, next) => {
+  if (!err.status) {
+    err.status = 500;
+  }
+  res.status(err.status).send(err.message);
+});
