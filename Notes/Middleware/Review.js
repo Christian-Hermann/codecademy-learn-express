@@ -3,6 +3,7 @@ const app = express();
 
 const { createWriteStream } = require("fs");
 const morgan = require("morgan");
+const bodyParser = require("body-parser");
 
 app.use(express.static("public"));
 
@@ -31,18 +32,7 @@ app.use(
 );
 
 // Parsing
-app.use((req, res, next) => {
-  let bodyData = "";
-  req.on("data", (data) => {
-    bodyData += data;
-  });
-  req.on("end", () => {
-    if (bodyData) {
-      req.body = JSON.parse(bodyData);
-    }
-    next();
-  });
-});
+app.use(bodyParser.json());
 
 // Get all Cards
 app.get("/cards", (req, res, next) => {
