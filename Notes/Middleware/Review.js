@@ -34,6 +34,18 @@ app.use(
 // Parsing
 app.use(bodyParser.json());
 
+app.use("/cards/:cardId", (req, res, next) => {
+  const cardId = Number(req.params.cardId);
+  const cardIndex = cards.findIndex((card) => card.id === cardId);
+
+  if (cardIndex === -1) {
+    return res.status(404).send("Card not found");
+  }
+
+  req.cardIndex = cardIndex;
+  next();
+});
+
 // Get all Cards
 app.get("/cards", (req, res, next) => {
   res.send(cards);
@@ -71,21 +83,11 @@ app.post("/cards", (req, res, next) => {
 
 // Get a single Card
 app.get("/cards/:cardId", (req, res, next) => {
-  const cardId = Number(req.params.cardId);
-  const cardIndex = cards.findIndex((card) => card.id === cardId);
-  if (cardIndex === -1) {
-    return res.status(404).send("Card not found");
-  }
-  res.send(cards[cardIndex]);
+  res.send(cards[req.cardIndex]);
 });
 
 // Update a Card
 app.put("/cards/:cardId", (req, res, next) => {
-  const cardId = Number(req.params.cardId);
-  const cardIndex = cards.findIndex((card) => card.id === cardId);
-  if (cardIndex === -1) {
-    return res.status(404).send("Card not found");
-  }
   const newCard = req.body;
   const validSuits = ["Clubs", "Diamonds", "Hearts", "Spades"];
   const validRanks = [
@@ -109,21 +111,16 @@ app.put("/cards/:cardId", (req, res, next) => {
   ) {
     return res.status(400).send("Invalid card!");
   }
-  if (!newCard.id || newCard.id !== cardId) {
-    newCard.id = cardId;
+  if (!newCard.id || newCard.id !== Number(req.params.cardId)) {
+    newCard.id = Number(req.params.cardId);
   }
-  cards[cardIndex] = newCard;
+  cards[req.cardIndex] = newCard;
   res.send(newCard);
 });
 
 // Delete a Card
 app.delete("/cards/:cardId", (req, res, next) => {
-  const cardId = Number(req.params.cardId);
-  const cardIndex = cards.findIndex((card) => card.id === cardId);
-  if (cardIndex === -1) {
-    return res.status(404).send("Card not found");
-  }
-  cards.splice(cardIndex, 1);
+  cards.splice(req.cardIndex, 1);
   res.status(204).send();
 });
 
