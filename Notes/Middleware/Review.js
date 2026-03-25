@@ -46,14 +46,9 @@ app.use("/cards/:cardId", (req, res, next) => {
   next();
 });
 
-// Get all Cards
-app.get("/cards", (req, res, next) => {
-  res.send(cards);
-});
-
-// Create a new Card
-app.post("/cards", (req, res, next) => {
+const validateCard = (req, res, next) => {
   const newCard = req.body;
+
   const validSuits = ["Clubs", "Diamonds", "Hearts", "Spades"];
   const validRanks = [
     "2",
@@ -70,14 +65,29 @@ app.post("/cards", (req, res, next) => {
     "King",
     "Ace",
   ];
+
   if (
     validSuits.indexOf(newCard.suit) === -1 ||
     validRanks.indexOf(newCard.rank) === -1
   ) {
     return res.status(400).send("Invalid card!");
   }
+
+  next();
+};
+
+// Get all Cards
+app.get("/cards", (req, res, next) => {
+  res.send(cards);
+});
+
+// Create a new Card
+app.post("/cards", validateCard, (req, res, next) => {
+  const newCard = req.body;
+
   newCard.id = nextId++;
   cards.push(newCard);
+
   res.status(201).send(newCard);
 });
 
@@ -87,34 +97,15 @@ app.get("/cards/:cardId", (req, res, next) => {
 });
 
 // Update a Card
-app.put("/cards/:cardId", (req, res, next) => {
+app.put("/cards/:cardId", validateCard, (req, res, next) => {
   const newCard = req.body;
-  const validSuits = ["Clubs", "Diamonds", "Hearts", "Spades"];
-  const validRanks = [
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "Jack",
-    "Queen",
-    "King",
-    "Ace",
-  ];
-  if (
-    validSuits.indexOf(newCard.suit) === -1 ||
-    validRanks.indexOf(newCard.rank) === -1
-  ) {
-    return res.status(400).send("Invalid card!");
-  }
+
   if (!newCard.id || newCard.id !== Number(req.params.cardId)) {
     newCard.id = Number(req.params.cardId);
   }
+
   cards[req.cardIndex] = newCard;
+
   res.send(newCard);
 });
 
